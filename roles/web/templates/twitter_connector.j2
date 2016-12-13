@@ -1,0 +1,12 @@
+#!/bin/sh
+
+DJANGODIR="{{ project_path }}"
+
+# Activate the virtual environment.
+cd $DJANGODIR
+. {{ virtualenv_path }}/bin/activate
+
+# Set additional environment variables.
+. {{ virtualenv_path }}/bin/postactivate
+
+exec honcho run python {{ project_path }}/manage.py twitter

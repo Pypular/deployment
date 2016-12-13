@@ -1,0 +1,36 @@
+---
+
+- name: Install packages required by the Django app inside virtualenv
+  pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+
+- name: Create Django .env file
+  template: src=.env
+            dest="{{ project_path }}/.env"
+            backup=yes
+
+- name: Create static directory
+  file: path="{{ project_path }}/static" state=directory owner="{{ gunicorn_user }}" group="{{ gunicorn_group }}"
+
+- name: Run Django collectstatic
+  shell: "source activate && honcho run python {{ project_path }}/manage.py collectstatic --noinput"
+  become: true
+  become_user: root
+  args:
+    chdir: "{{ virtualenv_path }}/bin"
+    executable: /bin/bash
+
+- name: Run the Django makemigrations command
+  shell: "source activate && honcho run python {{ project_path }}/manage.py makemigrations"
+  become: true
+  become_user: root
+  args:
+    chdir: "{{ virtualenv_path }}/bin"
+    executable: /bin/bash
+
+- name: Run Django database migrations
+  shell: "source activate && honcho run python {{ project_path }}/manage.py migrate"
+  become: true
+  become_user: root
+  args:
+    chdir: "{{ virtualenv_path }}/bin"
+    executable: /bin/bash

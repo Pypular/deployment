@@ -1,0 +1,11 @@
+[program:{{ application_name }}]
+command = {{ virtualenv_path }}/bin/gunicorn_start
+user = {{ gunicorn_user }}
+stdout_logfile = {{ application_log_file }}
+redirect_stderr = true
+
+[program:twitter_connector]
+command = {{ virtualenv_path }}/bin/twitter_connector_start
+user = root
+stdout_logfile = {{ virtualenv_path }}/twitter_connector.log
+redirect_stderr = true
