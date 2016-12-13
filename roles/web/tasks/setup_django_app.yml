@@ -9,7 +9,7 @@
             backup=yes
 
 - name: Create static directory
-  file: path="{{ project_path }}/static" state=directory owner="{{ gunicorn_user }}" group="{{ gunicorn_group }}"
+  file: path="{{ nginx_static_dir }}" state=directory owner="{{ gunicorn_user }}" group="{{ gunicorn_group }}"
 
 - name: Run Django collectstatic
   shell: "source activate && honcho run python {{ project_path }}/manage.py collectstatic --noinput"
