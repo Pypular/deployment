@@ -10,3 +10,6 @@
 
 - name: Restart Supervisor
   supervisorctl: name={{ application_name }} state=restarted
+
+- name: Restart Supervisor
+  supervisorctl: name=twitter_connector state=restarted
